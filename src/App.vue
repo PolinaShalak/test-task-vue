@@ -1,21 +1,26 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import Input from './components/Input.vue'
 </script>
 
 <template>
-  <div class="wrapper">
-    <HelloWorld msg="You did it!" />
-  </div>
+  <form class="wrapper">
+    <Input label="Name" name="name" :isRequired="true" errorMessage="Test message" />
+    <Input label="Email" name="email" :isRequired="true" />
+    <Input label="Subject" name="subject" />
+  </form>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+.wrapper {
+  width: 50vw;
+  margin: 0 auto;
+  display: grid;
+  gap: 16px;
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 1024px) {
   .wrapper {
-    display: flex;
+    width: 100%;
   }
 }
 </style>
