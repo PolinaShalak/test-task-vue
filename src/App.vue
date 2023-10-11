@@ -4,15 +4,19 @@ import Input from './components/Input.vue'
 import Button from './components/Button.vue'
 import useValidate from '@/hooks/useValidate'
 import { required, onlyLetters, email, minLength, maxLength } from '@/constants/validationObjects'
+import formRequest from '@/services/form'
 
-const validateState = reactive({
+const initialState = {
   name: '',
   email: '',
   subject: '',
   message: ''
-})
+}
+
+const validateState = reactive(initialState)
 
 const isLoading = ref(false)
+const requestResult = ref()
 
 const validateRules = {
   name: {
@@ -44,14 +48,22 @@ const { errors, onValidateField, onValidate, getIsValidForm } = useValidate(
   validateRules
 )
 
-const submitForm = () => {
+const submitForm = async () => {
   onValidate()
 
   if (getIsValidForm()) {
     isLoading.value = true
-    // todo request
+    const result = await formRequest(validateState)
 
-    // isLoading.value = false
+    requestResult.value = result
+
+    if (result.ok) {
+      for (const key in validateState) {
+        validateState[key] = ''
+      }
+    }
+
+    isLoading.value = false
   }
 }
 </script>
@@ -96,6 +108,15 @@ const submitForm = () => {
     />
 
     <span v-if="isLoading">Loading...</span>
+    <span
+      v-if="requestResult?.ok !== undefined"
+      :class="{ result__error: !requestResult?.ok, result__success: requestResult?.ok }"
+    >
+      {{ requestResult.ok ? 'Success' : 'Error' }}
+    </span>
+    <code v-if="requestResult?.data">
+      {{ requestResult.data }}
+    </code>
     <Button :isDisabled="isLoading" text="Submit" />
   </form>
 </template>
@@ -106,6 +127,14 @@ const submitForm = () => {
   margin: 0 auto;
   display: grid;
   gap: 16px;
+}
+
+.result__error {
+  color: var(--red);
+}
+
+.result__success {
+  color: var(--green);
 }
 
 @media (max-width: 1024px) {
