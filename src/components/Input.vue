@@ -1,7 +1,10 @@
 <script setup>
-defineProps({
+const props = defineProps({
   isRequired: {
-    type: true
+    type: Boolean
+  },
+  isMultiline: {
+    type: Boolean
   },
   label: {
     type: String,
@@ -15,11 +18,14 @@ defineProps({
     type: String
   }
 })
+
+const emits = ['update:inputValue', 'onBlur']
 </script>
 
 <template>
   <div class="input__wrapper">
     <input
+      v-if="!isMultiline"
       :required="isRequired"
       class="input"
       :class="{ input__error: errorMessage }"
@@ -28,6 +34,20 @@ defineProps({
       :label="label"
       :name="name"
       :placeholder="label"
+      @blur="$emit('onBlur')"
+      @input="$emit('update:inputValue', $event.target.value)"
+    />
+    <textarea
+      v-else
+      rows="5"
+      :required="isRequired"
+      class="input textarea"
+      :class="{ input__error: errorMessage }"
+      :id="name"
+      :name="name"
+      :placeholder="label"
+      @blur="$emit('onBlur')"
+      @input="$emit('update:inputValue', $event.target.value)"
     />
     <label
       class="input__label"
@@ -75,6 +95,11 @@ defineProps({
   border-radius: 4px;
   padding: 16px;
   outline: none;
+}
+
+.textarea {
+  resize: none;
+  height: auto;
 }
 
 .input:placeholder-shown + .input__label {

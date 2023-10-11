@@ -1,12 +1,15 @@
 <script setup>
 import Input from './components/Input.vue'
+import Button from './components/Button.vue'
 </script>
 
 <template>
   <form class="wrapper">
-    <Input label="Name" name="name" :isRequired="true" errorMessage="Test message" />
-    <Input label="Email" name="email" :isRequired="true" />
+    <Input :isRequired="true" label="Name" name="name" errorMessage="Test message" />
+    <Input :isRequired="true" label="Email" name="email" />
     <Input label="Subject" name="subject" />
+    <Input :isRequired="true" :isMultiline="true" label="Message" name="message" />
+    <Button text="Submit" />
   </form>
 </template>
 
