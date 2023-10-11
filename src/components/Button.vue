@@ -1,5 +1,8 @@
 <script setup>
 defineProps({
+  isDisabled: {
+    type: Boolean
+  },
   text: {
     type: String,
     required: true
@@ -8,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-  <button type="submit" class="button" :text="text">{{ text }}</button>
+  <button :disabled="isDisabled" type="submit" class="button" :text="text">{{ text }}</button>
 </template>
 
 <style scoped>
@@ -26,5 +29,10 @@ defineProps({
 
 .button:hover {
   opacity: 0.6;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  pointer-events: none;
 }
 </style>

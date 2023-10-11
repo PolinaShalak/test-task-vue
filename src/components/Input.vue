@@ -16,6 +16,10 @@ const props = defineProps({
   },
   errorMessage: {
     type: String
+  },
+  inputValue: {
+    type: String,
+    required: true
   }
 })
 
@@ -34,6 +38,7 @@ const emits = ['update:inputValue', 'onBlur']
       :label="label"
       :name="name"
       :placeholder="label"
+      :value="inputValue"
       @blur="$emit('onBlur')"
       @input="$emit('update:inputValue', $event.target.value)"
     />
@@ -46,6 +51,7 @@ const emits = ['update:inputValue', 'onBlur']
       :id="name"
       :name="name"
       :placeholder="label"
+      :value="inputValue"
       @blur="$emit('onBlur')"
       @input="$emit('update:inputValue', $event.target.value)"
     />
